@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
+    <PackageReference Include="microsoft.EntityFrameworkcore.sqlserver" Version="2.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sample.BP\Sample.BP.csproj" />
+    <ProjectReference Include="..\Sample.Data\Sample.Data.csproj" />
+    <ProjectReference Include="..\Sample.Definitions\Sample.Definitions.csproj" />
+    <ProjectReference Include="..\Sample.Services\Sample.Services.csproj" />
+    <ProjectReference Include="..\YBP.Framework\YBP.Framework.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+    <PackageReference Include="microsoft.aspnetcore.Identity" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sample.Definitions\Sample.Definitions.csproj" />
+    <ProjectReference Include="..\Sample.Services\Sample.Services.csproj" />
+    <ProjectReference Include="..\YBP.Framework\YBP.Framework.csproj" />
+  </ItemGroup>
+
+</Project>
