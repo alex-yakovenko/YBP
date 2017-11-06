@@ -5,6 +5,14 @@ namespace YBP.Framework
 {
     public class YbpFlagsDictionary: Dictionary<string, bool>
     {
+        public YbpFlagsDictionary()
+        {
+        }
+
+        public YbpFlagsDictionary(Dictionary<string, bool> dict): base(dict)
+        {
+        }
+
         public bool AlreadyExecuted<TAction>()
         {
             var key = $"{typeof(TAction).Name}_Executed";

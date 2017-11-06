@@ -11,6 +11,8 @@ namespace YBP.Framework
         Func<YbpFlagsDictionary, bool> MayToBeExecuted { get; }
 
         Func<YbpFlagsDictionary, bool> CannotToBeExecuted { get;  }
+
+        bool CanExecute(YbpUserContext user);
     }
 
     public abstract class YbpActionBase<TProcess, TParam, TResult>: IYbpActionBase
@@ -33,6 +35,11 @@ namespace YBP.Framework
         private bool _IsAsyncOverriden = true;
 
         protected abstract Task<TResult> RunAsync(YbpContext<TProcess> context, TParam prm);
+
+        public virtual bool CanExecute(YbpUserContext user)
+        {
+            return true;
+        }
     }
 
     public abstract class YbpFirstAction<TProcess, TParam, TResult>

@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Sample.BP.UserRegistration;
 using Sample.BP.UserRegistration.Dto;
 using Sample.Data;
 using Sample.Definitions;
 using Sample.Definitions.Users;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using YBP.Framework;
+using YBP.Framework.Storage.EF;
 
 namespace YBP.UnitTests
 {
@@ -31,8 +34,10 @@ namespace YBP.UnitTests
                 .AddTransient<CreateUserAction>()
                 .AddTransient<AppUserManager>()
                 .AddTransient<AppRoleManager>()
+                .AddSingleton(new YbpUserContext { {"UserId", 75675 } })
                 .AddDbContext<SampleDbContext>()
                 .AddIdentity<AppUser, AppRole>()
+           
                 .AddUserStore<UserStore<AppUser, AppRole, SampleDbContext, int>>()
                 .AddRoleStore<RoleStore<AppRole, SampleDbContext, int>>();
 
@@ -49,24 +54,13 @@ namespace YBP.UnitTests
             var action = serviceProvider.GetService<CreateUserAction>();
             var dc = serviceProvider.GetService<SampleDbContext>();
 
-            CreateUserResult r = null;
-
-            using (var tr = dc.Database.BeginTransaction())
-                try
-                {
-                    r = await action.StartAsync(new CreateUserInfo
+            var r = await action.StartAsync(new CreateUserInfo
                     {
                         FirstName = "John",
                         LastName = $"Doe_{Guid.NewGuid()}".Replace("-", ""),
                         Email = "wrong email",
                         Role = SystemRole.RegularUser
                     });
-
-                    tr.Commit();
-                }
-                catch {
-
-                }
 
             Assert.IsTrue(r.Success);
         }
@@ -78,6 +72,12 @@ namespace YBP.UnitTests
             dc.Database.EnsureCreated();
         }
 
+        [TestMethod]
+        public void CreateStorageDb()
+        {
+            var dc = new YbpDbContext();
+            dc.Database.EnsureCreated();
+        }
 
         [TestMethod]
         public async Task CreateRoles()
@@ -103,6 +103,23 @@ namespace YBP.UnitTests
                 NormalizedName = SystemRole.RegularUser.ToUpper()
             });
 
+
+        }
+
+        [TestMethod]
+        public void DictSerialize()
+        {
+            var dict = new Dictionary<string, object> {
+                { "UserId", 6456 },
+                { "UserRole", "Manager" },
+                { "Created", new DateTime(2017, 10, 22, 14, 15, 03) }
+            };
+
+            var s = JsonConvert.SerializeObject(dict);
+
+            var d1 = JsonConvert.DeserializeObject<Dictionary<string, object>>(s);
+
+            Assert.AreEqual(3, d1.Count);
 
         }
     }

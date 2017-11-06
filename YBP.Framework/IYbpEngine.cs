@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 
 namespace YBP.Framework
@@ -6,11 +7,10 @@ namespace YBP.Framework
     public interface IYbpEngine
     {
 
-        Task<TResult> StartAsync<TProcess, TResult>(Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance)
+        Task<TResult> StartAsync<TProcess, TResult>(Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance, string prmJson = null)
                     where TProcess : YbpProcessBase, new();
 
-
-        Task<TResult> ExecAsync<TProcess, TResult>(string id, Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance)
+        Task<TResult> ExecAsync<TProcess, TResult>(string id, Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance, string prmJson = null)
                     where TProcess : YbpProcessBase, new();
 
     }
@@ -19,61 +19,61 @@ namespace YBP.Framework
     {
         private readonly IServiceProvider _services;
         private readonly IYbpContextStorage _ctxStorage;
+        private readonly YbpUserContext _userContext;
 
         public YbpEngine(
             IServiceProvider services,
-            IYbpContextStorage ctxStorage
+            IYbpContextStorage ctxStorage,
+            YbpUserContext userContext
             )
         {
             _services = services;
             _ctxStorage = ctxStorage;
+            _userContext = userContext;
         }
 
-        public TResult Exec<TProcess, TResult>(string id, Func<YbpContext<TProcess>, TResult> action, IYbpActionBase instance)
+        public async Task<TResult> ExecAsync<TProcess, TResult>(string id, Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance, string prmJson = null)
             where TProcess : YbpProcessBase, new()
         {
             var ctx = _ctxStorage.ById<TProcess>(id);
-            var result = action(ctx);
-            _ctxStorage.Save(ctx);
-            return result;
-        }
-
-        public async Task<TResult> ExecAsync<TProcess, TResult>(string id, Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance)
-            where TProcess : YbpProcessBase, new()
-        {
-            var ctx = _ctxStorage.ById<TProcess>(id);
-            var result = await action(ctx);
-            _ctxStorage.Save(ctx);
-            return result;
-        }
-
-
-        public TResult Start<TProcess, TResult>(Func<YbpContext<TProcess>, TResult> action, IYbpActionBase instance)
-            where TProcess : YbpProcessBase, new()
-        {
-            var ctx = _ctxStorage.New<TProcess>();
-            var result = action(ctx);
-
-            if (!string.IsNullOrWhiteSpace(ctx.Id))
-                _ctxStorage.Save(ctx);
-
-            return result;
-        }
-
-        public async Task<TResult> StartAsync<TProcess, TResult>(Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance)
-            where TProcess : YbpProcessBase, new()
-        {
-            var ctx = _ctxStorage.New<TProcess>();
 
             if (instance.CannotToBeExecuted(ctx.Flags))
                 return default(TResult);
 
             var result = await action(ctx);
 
+            _ctxStorage.Save(ctx);
+
+            return result;
+        }
+
+
+        public async Task<TResult> StartAsync<TProcess, TResult>(Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance, string prmJson = null)
+            where TProcess : YbpProcessBase, new()
+        {
+            var ctx = _ctxStorage.New<TProcess>();
+
+            var isAuthorized = instance.CanExecute(_userContext);
+
+            _ctxStorage.LogActionStart(ctx, instance.GetType().Name, prmJson, (int)_userContext["UserId"], isAuthorized);
+
+            TResult result = default(TResult);
+            try
+            {
+                result = await action(ctx);
+            }
+            catch (Exception e)
+            {
+                _ctxStorage.LogActionFailure(ctx, e);
+
+                throw;
+            }
+
             ctx.Flags.MarkAlreadyExecuted(instance.GetType());
 
-            if (!string.IsNullOrWhiteSpace(ctx.Id))
-                _ctxStorage.Save(ctx);
+            _ctxStorage.Save(ctx, _userContext);
+
+            _ctxStorage.LogActionSucceed(ctx, JsonConvert.SerializeObject(result));
 
             return result;
         }
