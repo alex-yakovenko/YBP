@@ -8,6 +8,11 @@ namespace YBP.Framework
     {
         private readonly YbpDbContext _db;
 
+        public YbpContextStorage(YbpDbContext db)
+        {
+            _db = db;
+        }
+
         public YbpContext<TProcess> ById<TProcess>(string id)
             where TProcess: YbpProcessBase, new()
         {
@@ -84,7 +89,7 @@ namespace YBP.Framework
                         UserId = df.UserId
                     };
 
-                    _db.YbpFlags.Add(df);
+                    _db.YbpFlagHistory.Add(dfh);
                 }
                 else if (df.IsSet != f.Value)
                 {
@@ -100,7 +105,7 @@ namespace YBP.Framework
                         UserId = df.UserId
                     };
 
-                    _db.YbpFlags.Add(df);
+                    _db.YbpFlagHistory.Add(dfh);
 
                 }
 

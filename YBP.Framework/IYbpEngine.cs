@@ -42,7 +42,7 @@ namespace YBP.Framework
 
             var result = await action(ctx);
 
-            _ctxStorage.Save(ctx);
+            _ctxStorage.Save(ctx, _userContext);
 
             return result;
         }

@@ -4,7 +4,7 @@ namespace YBP.Framework.Storage.EF
 {
     public class YbpDbContext: DbContext
     {
-        public YbpDbContext(DbContextOptions options) : base(options)
+        public YbpDbContext(DbContextOptions<YbpDbContext> options) : base(options)
         {
             Options = options;
         }
@@ -39,6 +39,7 @@ namespace YBP.Framework.Storage.EF
         {
             //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
             optionsBuilder.UseSqlServer(@"Server=localhost;Database=YBP;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer(@"Server=localhost;Database=YBP;Trusted_Connection=True;");
         }
 
         public DbContextOptions Options { get; }

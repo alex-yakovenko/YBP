@@ -36,6 +36,7 @@ namespace YBP.UnitTests
                 .AddTransient<AppRoleManager>()
                 .AddSingleton(new YbpUserContext { {"UserId", 75675 } })
                 .AddDbContext<SampleDbContext>()
+                .AddDbContext<YbpDbContext>()
                 .AddIdentity<AppUser, AppRole>()
            
                 .AddUserStore<UserStore<AppUser, AppRole, SampleDbContext, int>>()
