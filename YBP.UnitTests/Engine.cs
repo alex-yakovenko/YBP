@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using YBP.Framework;
 using YBP.Framework.Storage.EF;
+using YBP.Framework.Regisry;
 
 namespace YBP.UnitTests
 {
@@ -122,6 +123,12 @@ namespace YBP.UnitTests
 
             Assert.AreEqual(3, d1.Count);
 
+        }
+
+        [TestMethod]
+        public void TestYbpConfig()
+        {
+            YbpConfiguration.LoadActionsFromAssembly<CreateUserAction>();
         }
     }
 }

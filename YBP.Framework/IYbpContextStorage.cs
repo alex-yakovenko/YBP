@@ -7,6 +7,9 @@ namespace YBP.Framework
         YbpContext<TProcess> ById<TProcess>(string id)
             where TProcess : YbpProcessBase, new();
 
+        YbpContext<TProcess> ById<TProcess>(int id)
+            where TProcess : YbpProcessBase, new();
+
         YbpContext<TProcess> New<TProcess>()
             where TProcess : YbpProcessBase, new();
 

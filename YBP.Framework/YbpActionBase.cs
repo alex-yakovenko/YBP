@@ -40,6 +40,20 @@ namespace YBP.Framework
         {
             return true;
         }
+
+        const int MaxActionRuns = 200;
+
+        protected async Task ProcessActions(int instanceId)
+        {
+            int i = 0;
+            bool mayRun = true;
+
+            while (mayRun && i < MaxActionRuns)
+            {
+                mayRun = await _engine.ProcessNextAction<TProcess>(instanceId);
+                i++;
+            }
+        }
     }
 
     public abstract class YbpFirstAction<TProcess, TParam, TResult>
@@ -60,9 +74,14 @@ namespace YBP.Framework
 
         public async Task<TResult> StartAsync(TParam prm)
         {
-            return await _engine
+            var result = await _engine
                 .StartAsync<TProcess, TResult>(async c => await RunAsync(c, prm), this);
+
+            await ProcessActions(result.InstanceId);
+
+            return result.Result;
         }
+
     }
 
     public abstract class YbpAction<TProcess, TParam, TResult>
@@ -75,8 +94,12 @@ namespace YBP.Framework
 
         public async Task<TResult> ExecAsync(string id, TParam prm)
         {
-            return await _engine
+            var result = await _engine
                 .ExecAsync<TProcess, TResult>(id, async c => await RunAsync(c, prm), this);
+
+            await ProcessActions(result.InstanceId);
+
+            return result.Result;
         }
 
     }

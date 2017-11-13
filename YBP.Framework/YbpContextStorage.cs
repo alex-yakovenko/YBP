@@ -36,6 +36,29 @@ namespace YBP.Framework
             return result;
         }
 
+        public YbpContext<TProcess> ById<TProcess>(int id)
+            where TProcess : YbpProcessBase, new()
+        {
+            var pfx = new TProcess().Prefix;
+
+            var data = _db.YbpProcesses.FirstOrDefault(x => x.Pfx == pfx && x.Id == id);
+
+            if (data == null)
+                return null;
+
+            var result = new YbpContext<TProcess>
+            {
+                Id = data.InstanceId,
+                StoredId = data.Id,
+                Flags = new YbpFlagsDictionary(_db
+                    .YbpFlags
+                    .Where(x => x.ProcessId == data.Id)
+                    .ToDictionary(x => x.Key, x => x.IsSet))
+            };
+
+            return result;
+        }
+
         public YbpContext<TProcess> New<TProcess>()
             where TProcess : YbpProcessBase, new()
         {
