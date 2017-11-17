@@ -35,6 +35,7 @@ namespace YBP.UnitTests
                 .AddTransient<CreateUserAction>()
                 .AddTransient<AppUserManager>()
                 .AddTransient<AppRoleManager>()
+                .AddTransient<SendInvitation>()
                 .AddSingleton(new YbpUserContext { {"UserId", 75675 } })
                 .AddDbContext<SampleDbContext>()
                 .AddDbContext<YbpDbContext>()
@@ -47,6 +48,8 @@ namespace YBP.UnitTests
             serviceProvider = c.BuildServiceProvider();
 
             _bp = serviceProvider.GetService<IYbpEngine>();
+
+            YbpConfiguration.LoadActionsFromAssembly<CreateUserAction>();
         }
 
 
@@ -128,7 +131,6 @@ namespace YBP.UnitTests
         [TestMethod]
         public void TestYbpConfig()
         {
-            YbpConfiguration.LoadActionsFromAssembly<CreateUserAction>();
         }
     }
 }

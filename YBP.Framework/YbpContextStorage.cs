@@ -158,7 +158,7 @@ namespace YBP.Framework
 
         public void LogActionFailure<TProcess>(YbpContext<TProcess> ctx, Exception e) where TProcess : YbpProcessBase, new()
         {
-            var data = _db.YbpActionHistory.Find(ctx.StoredId);
+            var data = _db.YbpActionHistory.Find(ctx.StoredActionId);
             data.Results = $"{e.GetType().Name}: {e.Message}";
             data.FinishedUTC = DateTime.UtcNow;
             _db.SaveChanges();
@@ -166,7 +166,7 @@ namespace YBP.Framework
 
         public void LogActionSucceed<TProcess>(YbpContext<TProcess> ctx, string v) where TProcess : YbpProcessBase, new()
         {
-            var data = _db.YbpActionHistory.Find(ctx.StoredId);
+            var data = _db.YbpActionHistory.Find(ctx.StoredActionId);
             data.Results = v;
             data.Succeed = true;
             data.FinishedUTC = DateTime.UtcNow;

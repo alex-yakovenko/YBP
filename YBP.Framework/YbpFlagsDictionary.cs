@@ -15,7 +15,12 @@ namespace YBP.Framework
 
         public bool AlreadyExecuted<TAction>()
         {
-            var key = $"{typeof(TAction).Name}_Executed";
+            return AlreadyExecuted(typeof(TAction));
+        }
+
+        public bool AlreadyExecuted(Type actionType)
+        {
+            var key = $"{actionType.Name}_Executed";
             return ContainsKey(key) && this[key];
         }
 

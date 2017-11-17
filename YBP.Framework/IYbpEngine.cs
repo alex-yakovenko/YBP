@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using YBP.Framework.Regisry;
 
 namespace YBP.Framework
 {
@@ -45,34 +47,17 @@ namespace YBP.Framework
                 ActionId = ctx.StoredActionId,
             };
 
-            if (instance.CannotToBeExecuted(ctx.Flags))
+            if (instance.MayNotToBeExecuted(ctx.Flags))
                 return result;
 
-            result.Result = await action(ctx);
-
-            _ctxStorage.Save(ctx, _userContext);
+            await ProcessAction<TProcess, TResult>(result, ctx, action, instance, prmJson);
 
             return result;
         }
 
-        public async Task<bool> ProcessNextAction<TProcess>(int ctxId)
+        private async Task ProcessAction<TProcess, TResult>(ActionExecResult<TResult> result, YbpContext<TProcess> ctx, Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance, string prmJson)
             where TProcess : YbpProcessBase, new()
         {
-            var ctx = _ctxStorage.ById<TProcess>(ctxId);
-            return false;
-        }
-
-        public async Task<ActionExecResult<TResult>> StartAsync<TProcess, TResult>(Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance, string prmJson = null)
-            where TProcess : YbpProcessBase, new()
-        {
-            var ctx = _ctxStorage.New<TProcess>();
-
-            var result = new ActionExecResult<TResult>
-            {
-                InstanceId = ctx.StoredId,
-                ActionId = ctx.StoredActionId
-            };
-
             var isAuthorized = instance.CanExecute(_userContext);
 
             _ctxStorage.LogActionStart(ctx, instance.GetType().Name, prmJson, (int)_userContext["UserId"], isAuthorized);
@@ -93,6 +78,51 @@ namespace YBP.Framework
             _ctxStorage.Save(ctx, _userContext);
 
             _ctxStorage.LogActionSucceed(ctx, JsonConvert.SerializeObject(result.Result));
+
+        }
+
+        public async Task<bool> ProcessNextAction<TProcess>(int ctxId)
+            where TProcess : YbpProcessBase, new()
+        {
+            var actions = YbpConfiguration
+                .Actions[typeof(TProcess)]
+                .Where(x => x.CanBeExecutedAutomatically && typeof(YbpAction<TProcess>).IsAssignableFrom(x.GetType()))
+                .Select(x => x as YbpAction<TProcess>)
+                .ToArray();
+
+            if (!actions.Any())
+                return false;
+
+            var ctx = _ctxStorage.ById<TProcess>(ctxId);
+
+            var action = actions
+                .FirstOrDefault(x => x.NeedsToBeExecuted(ctx.Flags) 
+                    && !x.MayNotToBeExecuted(ctx.Flags));
+
+            if (action == null)
+                return false;
+
+            var t = action.GetType();
+
+            action = _services.GetService(t) as YbpAction<TProcess>;
+
+            await ExecAsync<TProcess, string>(ctx.Id, async c => await action.Run(c), action);
+
+            return true;
+        }
+
+        public async Task<ActionExecResult<TResult>> StartAsync<TProcess, TResult>(Func<YbpContext<TProcess>, Task<TResult>> action, IYbpActionBase instance, string prmJson = null)
+            where TProcess : YbpProcessBase, new()
+        {
+            var ctx = _ctxStorage.New<TProcess>();
+
+            var result = new ActionExecResult<TResult>
+            {
+                InstanceId = ctx.StoredId,
+                ActionId = ctx.StoredActionId
+            };
+
+            await ProcessAction<TProcess, TResult>(result, ctx, action, instance, prmJson);
 
             return result;
         }
