@@ -16,6 +16,7 @@ using YBP.Framework;
 using YBP.Framework.Storage.EF;
 using YBP.Framework.Regisry;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace YBP.UnitTests
 {
@@ -34,6 +35,9 @@ namespace YBP.UnitTests
                 .AddUserSecrets("YBP-B24A7B7F-D538-4230-9AEB-11928B687712")
                 .Build();
 
+            var ybpConnectionString = config["YbpConnectionString"];
+            var ybpSampleConnectionString = config["YbpSampleAppConnectionString"];
+
             var c = new ServiceCollection();
             c.AddLogging()
                 .AddTransient<IYbpEngine, YbpEngine>()
@@ -43,8 +47,8 @@ namespace YBP.UnitTests
                 .AddTransient<AppRoleManager>()
                 .AddTransient<SendInvitation>()
                 .AddSingleton(new YbpUserContext { {"UserId", 75675 } })
-                .AddDbContext<SampleDbContext>()
-                .AddDbContext<YbpDbContext>()
+                .AddDbContext<SampleDbContext>(opt => opt.UseSqlServer(ybpConnectionString))
+                .AddDbContext<YbpDbContext>(opt => opt.UseSqlServer(ybpConnectionString))
                 .AddIdentity<AppUser, AppRole>()
            
                 .AddUserStore<UserStore<AppUser, AppRole, SampleDbContext, int>>()
