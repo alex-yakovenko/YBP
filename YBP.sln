@@ -1,19 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YBP.Framework", "YBP.Framework\YBP.Framework.csproj", "{0CBAF94F-B4A2-4BA1-869C-87B7FB88BE1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YBP.Framework", "YBP.Framework\YBP.Framework.csproj", "{0CBAF94F-B4A2-4BA1-869C-87B7FB88BE1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YBP.UnitTests", "YBP.UnitTests\YBP.UnitTests.csproj", "{D7B3B1FF-76CF-4E14-880C-31A23B902D59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YBP.UnitTests", "YBP.UnitTests\YBP.UnitTests.csproj", "{D7B3B1FF-76CF-4E14-880C-31A23B902D59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Data", "Sample.Data\Sample.Data.csproj", "{C994E100-E231-4EAB-94DC-65EC16AF427B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Data", "Sample.Data\Sample.Data.csproj", "{C994E100-E231-4EAB-94DC-65EC16AF427B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Definitions", "Sample.Definitions\Sample.Definitions.csproj", "{115F6319-685F-468B-BB7C-B639E7A06F53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Definitions", "Sample.Definitions\Sample.Definitions.csproj", "{115F6319-685F-468B-BB7C-B639E7A06F53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.BP", "Sample.BP\Sample.BP.csproj", "{51FC9848-4D1D-4361-B70D-F6A0B585695C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.BP", "Sample.BP\Sample.BP.csproj", "{51FC9848-4D1D-4361-B70D-F6A0B585695C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Services", "Sample.Services\Sample.Services.csproj", "{26B15ABB-F226-432F-8DA7-2CFBB17C9438}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Services", "Sample.Services\Sample.Services.csproj", "{26B15ABB-F226-432F-8DA7-2CFBB17C9438}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web", "Sample.Web\Sample.Web.csproj", "{32715011-1532-49DC-A1BE-5623D5658156}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{26B15ABB-F226-432F-8DA7-2CFBB17C9438}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26B15ABB-F226-432F-8DA7-2CFBB17C9438}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26B15ABB-F226-432F-8DA7-2CFBB17C9438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32715011-1532-49DC-A1BE-5623D5658156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32715011-1532-49DC-A1BE-5623D5658156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32715011-1532-49DC-A1BE-5623D5658156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32715011-1532-49DC-A1BE-5623D5658156}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

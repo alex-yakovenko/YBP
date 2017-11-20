@@ -11,7 +11,7 @@ namespace Sample.Data.Repositories.Companies
         ICompanyWriter, 
         ICompanyReader
     {
-        protected CompanyRepo(SampleDbContext db) : base(db)
+        public CompanyRepo(SampleDbContext db) : base(db)
         {
         }
 

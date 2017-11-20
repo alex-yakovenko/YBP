@@ -90,7 +90,7 @@ namespace YBP.UnitTests
         [TestMethod]
         public void CreateStorageDb()
         {
-            var dc = new YbpDbContext();
+            var dc = serviceProvider.GetService<YbpDbContext>(); ;
             dc.Database.EnsureCreated();
         }
 
