@@ -15,6 +15,7 @@ using System.Transactions;
 using YBP.Framework;
 using YBP.Framework.Storage.EF;
 using YBP.Framework.Regisry;
+using Microsoft.Extensions.Configuration;
 
 namespace YBP.UnitTests
 {
@@ -28,6 +29,11 @@ namespace YBP.UnitTests
         [TestInitialize]
         public void Init()
         {
+
+            var config = new ConfigurationBuilder()
+                .AddUserSecrets("YBP-B24A7B7F-D538-4230-9AEB-11928B687712")
+                .Build();
+
             var c = new ServiceCollection();
             c.AddLogging()
                 .AddTransient<IYbpEngine, YbpEngine>()
