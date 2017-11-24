@@ -64,7 +64,7 @@ namespace YBP.Framework
         {
             var data = new YbpProcess
             {
-                Pfx = new TProcess().Prefix,
+                Pfx = new TProcess().Prefix.Substring(0, 16),
                 InstanceId = Guid.NewGuid().ToString()
             };
 

@@ -36,6 +36,6 @@ namespace Sample.Definitions.Common
 
         bool Any(TFilter filter = default(TFilter));
 
-        TListItem GetFirst<TListItem>(TFilter filter);
+        TListItem GetFirst<TListItem>(TFilter filter = null);
     }
 }

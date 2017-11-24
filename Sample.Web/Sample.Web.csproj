@@ -5,6 +5,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
+    <UserSecretsId>YBP-B24A7B7F-D538-4230-9AEB-11928B687712</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +27,12 @@
     <ProjectReference Include="..\Sample.Definitions\Sample.Definitions.csproj" />
     <ProjectReference Include="..\Sample.Services\Sample.Services.csproj" />
     <ProjectReference Include="..\YBP.Framework\YBP.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="tsconfig.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

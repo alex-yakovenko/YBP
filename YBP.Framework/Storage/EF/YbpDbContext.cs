@@ -9,19 +9,6 @@ namespace YBP.Framework.Storage.EF
             Options = options;
         }
 
-        private static readonly bool[] _migrated = { false };
-
-        public YbpDbContext()
-        {
-            if (!_migrated[0])
-                lock (_migrated)
-                    if (!_migrated[0])
-                    {
-                        Database.Migrate(); 
-                        _migrated[0] = true;
-                    }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<YbpProcess>()
@@ -38,7 +25,7 @@ namespace YBP.Framework.Storage.EF
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            //optionsBuilder.UseSqlServer(@"Server=localhost;Database=YBP;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer(@"Server=localhost;Database=YBP;Trusted_Connection=True;", x => x.MigrationsHistoryTable("__YbpMigrationsHistory"));
         }
 
         public DbContextOptions Options { get; }

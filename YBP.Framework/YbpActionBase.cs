@@ -92,6 +92,10 @@ namespace YBP.Framework
         : YbpActionBase<TProcess, TParam, TResult>
         where TProcess : YbpProcessBase, new()
     {
+        public override Func<YbpFlagsDictionary, bool> NeedsToBeExecuted => f => true;
+
+        public override Func<YbpFlagsDictionary, bool> MayNotToBeExecuted => f => false;
+
         public YbpAction(IYbpEngine engine) : base(engine)
         {
         }

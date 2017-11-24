@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.BP", "Sample.BP\Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Services", "Sample.Services\Sample.Services.csproj", "{26B15ABB-F226-432F-8DA7-2CFBB17C9438}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web", "Sample.Web\Sample.Web.csproj", "{32715011-1532-49DC-A1BE-5623D5658156}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Web", "Sample.Web\Sample.Web.csproj", "{32715011-1532-49DC-A1BE-5623D5658156}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

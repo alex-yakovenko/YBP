@@ -32,7 +32,7 @@ namespace YBP.UnitTests
         {
 
             var config = new ConfigurationBuilder()
-                .AddUserSecrets("YBP-B24A7B7F-D538-4230-9AEB-11928B687712")
+                .AddUserSecrets(Constants.SecretKey)
                 .Build();
 
             var ybpConnectionString = config["YbpConnectionString"];
@@ -47,8 +47,8 @@ namespace YBP.UnitTests
                 .AddTransient<AppRoleManager>()
                 .AddTransient<SendInvitation>()
                 .AddSingleton(new YbpUserContext { {"UserId", 75675 } })
-                .AddDbContext<SampleDbContext>(opt => opt.UseSqlServer(ybpConnectionString))
-                .AddDbContext<YbpDbContext>(opt => opt.UseSqlServer(ybpConnectionString))
+                .AddDbContext<SampleDbContext>(opt => opt.UseSqlServer(ybpSampleConnectionString))
+                .AddDbContext<YbpDbContext>(opt => opt.UseSqlServer(ybpConnectionString, x => x.MigrationsHistoryTable("__YbpMigrationsHistory")))
                 .AddIdentity<AppUser, AppRole>()
            
                 .AddUserStore<UserStore<AppUser, AppRole, SampleDbContext, int>>()
@@ -83,15 +83,17 @@ namespace YBP.UnitTests
         [TestMethod]
         public void CreateDb()
         {
-            var dc = new SampleDbContext();
-            dc.Database.EnsureCreated();
+            var dc = serviceProvider.GetService<SampleDbContext>(); 
+            if (!dc.Database.EnsureCreated())
+                dc.Database.Migrate();
         }
 
         [TestMethod]
         public void CreateStorageDb()
         {
-            var dc = serviceProvider.GetService<YbpDbContext>(); ;
-            dc.Database.EnsureCreated();
+            var dc = serviceProvider.GetService<YbpDbContext>();
+            if (!dc.Database.EnsureCreated())
+                dc.Database.Migrate();
         }
 
         [TestMethod]

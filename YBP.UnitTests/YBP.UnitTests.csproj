@@ -25,4 +25,10 @@
     <ProjectReference Include="..\YBP.Framework\YBP.Framework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="bptestsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
