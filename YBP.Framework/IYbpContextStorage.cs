@@ -17,5 +17,6 @@ namespace YBP.Framework
         void LogActionStart<TProcess>(YbpContext<TProcess> ctx, string name, string prmJson, int userId, bool isAuthorized) where TProcess : YbpProcessBase, new();
         void LogActionFailure<TProcess>(YbpContext<TProcess> ctx, Exception e) where TProcess : YbpProcessBase, new();
         void LogActionSucceed<TProcess>(YbpContext<TProcess> ctx, string v) where TProcess : YbpProcessBase, new();
+        void UpdateInstanceId(int storedId, string id);
     }
 }

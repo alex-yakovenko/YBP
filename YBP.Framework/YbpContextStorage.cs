@@ -64,7 +64,7 @@ namespace YBP.Framework
         {
             var data = new YbpProcess
             {
-                Pfx = new TProcess().Prefix.Substring(0, 16),
+                Pfx = new TProcess().Prefix,
                 InstanceId = Guid.NewGuid().ToString()
             };
 
@@ -173,5 +173,11 @@ namespace YBP.Framework
             _db.SaveChanges();
         }
 
+        public void UpdateInstanceId(int storedId, string id)
+        {
+            var data = _db.YbpProcesses.Find(storedId);
+            data.InstanceId = id;
+            _db.SaveChanges();
+        }
     }
 }

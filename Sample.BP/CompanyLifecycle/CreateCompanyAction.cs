@@ -54,6 +54,7 @@ namespace Sample.BP.CompanyLifecycle
             public MapConfig()
             {
                 CreateMap<NewCompanyInfo, CompanyInfo>();
+                CreateMap<CompanyInfo, CompanyInfo>();
             }
         }
 

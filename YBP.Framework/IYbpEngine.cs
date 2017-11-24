@@ -124,6 +124,9 @@ namespace YBP.Framework
 
             await ProcessAction<TProcess, TResult>(result, ctx, action, instance, prmJson);
 
+            if (!string.IsNullOrWhiteSpace(ctx.Id))
+                _ctxStorage.UpdateInstanceId(ctx.StoredId, ctx.Id);
+
             return result;
         }
 

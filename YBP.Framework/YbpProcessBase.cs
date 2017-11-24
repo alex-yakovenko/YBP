@@ -7,7 +7,7 @@ namespace YBP.Framework
 
         private string _className;
 
-        public virtual string Prefix => _className;
+        public virtual string Prefix => _className.Substring(0, 16);
         public virtual string Name => _className;
         public virtual string Title => _className;
 

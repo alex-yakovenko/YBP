@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,32 +31,40 @@ namespace YBP.UnitTests.BP.Companies
             base.InitializeServices(c);
 
             c.AddTransient<CreateCompanyAction>();
+            c.AddTransient<UpdateCompanyAction>();
         }
 
 
         [TestMethod]
         public async Task TestCreateCompany()
         {
-            var action = serviceProvider.GetService<CreateCompanyAction>();
+            var createAction = serviceProvider.GetService<CreateCompanyAction>();
+            var updateAction = serviceProvider.GetService<UpdateCompanyAction>();
+            var companyReader = serviceProvider.GetService<ICompanyReader>();
+
+
+            // Incorrect parameters: empty title
             var prm = new NewCompanyInfo {
                 Title = null                
             };
 
-            var r = await action.StartAsync(prm);
+            var r = await createAction.StartAsync(prm);
 
             Assert.IsFalse(r.Success);
             Assert.AreEqual("Please specify company name", r.Errors["Title"][0]);
 
+
+            // Correct parameters
             prm.Title = "New company";
             prm.IsApproved = true;
 
-            r = await action.StartAsync(prm);
+            r = await createAction.StartAsync(prm);
 
             Assert.IsTrue(r.Success);
             Assert.IsFalse(r.Errors.Any());
             Assert.AreNotEqual(0, r.Id);
 
-            var companyReader = serviceProvider.GetService<ICompanyReader>();
+            // Retrieve newly created company
             var company = companyReader.GetFirst<CompanyInfo>(new CompanyFilter
             {
                 Ids = new[] { r.Id }
@@ -64,6 +73,39 @@ namespace YBP.UnitTests.BP.Companies
             Assert.IsNotNull(company);
             Assert.AreEqual(prm.Title, company.Title);
             Assert.AreEqual(prm.IsApproved, company.IsApproved);
+
+            // Update the company with wrong title
+
+            var updateInfo = Mapper.Map<CompanyInfo>(company);
+
+            updateInfo.Title = " ";
+
+            var r1 = await updateAction.ExecAsync(r.Id.ToString(), updateInfo);
+
+            Assert.AreEqual("Please specify company name", r1["Title"][0]);
+
+            // Ensure we didn't change db entry
+            company = companyReader.GetFirst<CompanyInfo>(new CompanyFilter
+            {
+                Ids = new[] { r.Id }
+            });
+            Assert.AreEqual(prm.Title, company.Title);
+
+
+            // Update the company with correct title
+            updateInfo.Title = "New company name";
+            updateInfo.IsApproved = false;
+
+            r1 = await updateAction.ExecAsync(r.Id.ToString(), updateInfo);
+
+            // Retrieve updated company
+            company = companyReader.GetFirst<CompanyInfo>(new CompanyFilter
+            {
+                Ids = new[] { r.Id }
+            });
+            Assert.AreEqual(updateInfo.Title, company.Title);
+            Assert.AreEqual(updateInfo.IsApproved, company.IsApproved);
+
         }
 
         [TestMethod]
