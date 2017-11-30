@@ -12,7 +12,6 @@ namespace YBP.UnitTests.BP.Companies
     {
         public override void InitializeServices(ServiceCollection c)
         {
-            base.InitializeServices(c);
             c.AddTransient<UpdateCompanyAction>();
         }
 

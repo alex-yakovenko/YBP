@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Definitions", "Sampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.BP", "Sample.BP\Sample.BP.csproj", "{51FC9848-4D1D-4361-B70D-F6A0B585695C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Services", "Sample.Services\Sample.Services.csproj", "{26B15ABB-F226-432F-8DA7-2CFBB17C9438}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Web", "Sample.Web\Sample.Web.csproj", "{32715011-1532-49DC-A1BE-5623D5658156}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{51FC9848-4D1D-4361-B70D-F6A0B585695C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51FC9848-4D1D-4361-B70D-F6A0B585695C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51FC9848-4D1D-4361-B70D-F6A0B585695C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26B15ABB-F226-432F-8DA7-2CFBB17C9438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26B15ABB-F226-432F-8DA7-2CFBB17C9438}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26B15ABB-F226-432F-8DA7-2CFBB17C9438}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26B15ABB-F226-432F-8DA7-2CFBB17C9438}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32715011-1532-49DC-A1BE-5623D5658156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{32715011-1532-49DC-A1BE-5623D5658156}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32715011-1532-49DC-A1BE-5623D5658156}.Release|Any CPU.ActiveCfg = Release|Any CPU

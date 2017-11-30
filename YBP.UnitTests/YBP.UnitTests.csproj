@@ -21,7 +21,6 @@
     <ProjectReference Include="..\Sample.BP\Sample.BP.csproj" />
     <ProjectReference Include="..\Sample.Data\Sample.Data.csproj" />
     <ProjectReference Include="..\Sample.Definitions\Sample.Definitions.csproj" />
-    <ProjectReference Include="..\Sample.Services\Sample.Services.csproj" />
     <ProjectReference Include="..\YBP.Framework\YBP.Framework.csproj" />
   </ItemGroup>
 

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +26,6 @@
     <ProjectReference Include="..\Sample.BP\Sample.BP.csproj" />
     <ProjectReference Include="..\Sample.Data\Sample.Data.csproj" />
     <ProjectReference Include="..\Sample.Definitions\Sample.Definitions.csproj" />
-    <ProjectReference Include="..\Sample.Services\Sample.Services.csproj" />
     <ProjectReference Include="..\YBP.Framework\YBP.Framework.csproj" />
   </ItemGroup>
 

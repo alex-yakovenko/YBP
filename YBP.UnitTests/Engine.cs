@@ -17,12 +17,29 @@ using YBP.Framework.Storage.EF;
 using YBP.Framework.Regisry;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Sample.Definitions.Companies;
+using Sample.Services.Company;
+using Sample.BP;
+using Sample.Definitions.Companies.Dto;
 
 namespace YBP.UnitTests
 {
     [TestClass]
     public class Engine
     {
+        public Engine()
+        {
+            YbpConfiguration.LoadActionsFromAssembly<CreateUserAction>();
+            Mapper.Initialize(c => {
+                c.AddProfiles(typeof(SampleDbContext).Assembly); // Sample.Data
+                c.AddProfiles(typeof(CreateUserAction).Assembly); // Sample.BP
+                c.AddProfiles(typeof(ICompanyValidator).Assembly); // Sample.Definitions
+                c.AddProfiles(typeof(CompanyValidator).Assembly); // SampleServices
+            });
+
+        }
+
         public IYbpEngine _bp;
         private ServiceProvider serviceProvider;
 
@@ -39,27 +56,18 @@ namespace YBP.UnitTests
             var ybpSampleConnectionString = config["YbpSampleAppConnectionString"];
 
             var c = new ServiceCollection();
-            c.AddLogging()
-                .AddTransient<IYbpEngine, YbpEngine>()
-                .AddTransient<IYbpContextStorage, YbpContextStorage>()
-                .AddTransient<CreateUserAction>()
-                .AddTransient<AppUserManager>()
-                .AddTransient<AppRoleManager>()
-                .AddTransient<SendInvitation>()
-                .AddSingleton(new YbpUserContext { {"UserId", 75675 } })
-                .AddDbContext<SampleDbContext>(opt => opt.UseSqlServer(ybpSampleConnectionString))
-                .AddDbContext<YbpDbContext>(opt => opt.UseSqlServer(ybpConnectionString, x => x.MigrationsHistoryTable("__YbpMigrationsHistory")))
-                .AddIdentity<AppUser, AppRole>()
-           
-                .AddUserStore<UserStore<AppUser, AppRole, SampleDbContext, int>>()
-                .AddRoleStore<RoleStore<AppRole, SampleDbContext, int>>();
+            c.AddLogging();
+            c.InitDataContext(ybpSampleConnectionString);
+            c.InitYbpDataContext(ybpConnectionString);
+
+            c.InitBLServices();
+
+            c.AddSingleton(new YbpUserContext { { "UserId", 75675 } });
 
             var t = c.ToList();
             serviceProvider = c.BuildServiceProvider();
 
             _bp = serviceProvider.GetService<IYbpEngine>();
-
-            YbpConfiguration.LoadActionsFromAssembly<CreateUserAction>();
         }
 
 
@@ -141,8 +149,30 @@ namespace YBP.UnitTests
         }
 
         [TestMethod]
-        public void TestYbpConfig()
+        public void CreateCompany()
         {
+            var c = serviceProvider
+                .GetService<ICompanyWriter>();
+
+            c.Save(new CompanyInfo
+            {
+                IsApproved = true,
+                Title = "Company 1"
+            });
+
+            c.Save(new CompanyInfo
+            {
+                IsApproved = true,
+                Title = "Company 2"
+            });
+
+
+            c.Save(new CompanyInfo
+            {
+                IsApproved = true,
+                Title = "Company 3"
+            });
+
         }
     }
 }

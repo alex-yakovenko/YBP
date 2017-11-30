@@ -16,6 +16,7 @@ using YBP.Framework;
 using YBP.Framework.Regisry;
 using YBP.Framework.Storage.EF;
 using AutoMapper;
+using Sample.BP;
 
 
 namespace YBP.UnitTests.BP
@@ -55,22 +56,14 @@ namespace YBP.UnitTests.BP
             connString = $"Server={serverName};Database={dbName};Trusted_Connection=True;";
 
             var c = new ServiceCollection();
-            c.AddLogging()
-                .AddTransient<IYbpEngine, YbpEngine>()
-                .AddTransient<IYbpContextStorage, YbpContextStorage>()
-                .AddTransient<AppUserManager>()
-                .AddTransient<AppRoleManager>();
 
+            c.InitDataContext(connString);
+            c.InitYbpDataContext(connString);
+
+            c.InitBLServices();
             InitializeServices(c);
 
-            c.AddSingleton(new YbpUserContext { { "UserId", 75675 } })
-
-                .AddDbContext<SampleDbContext>(opt => opt.UseSqlServer(connString))
-                .AddDbContext<YbpDbContext>(opt => opt.UseSqlServer(connString, x => x.MigrationsHistoryTable("__YbpMigrationsHistory")))
-                .AddIdentity<AppUser, AppRole>()
-
-                .AddUserStore<UserStore<AppUser, AppRole, SampleDbContext, int>>()
-                .AddRoleStore<RoleStore<AppRole, SampleDbContext, int>>();
+            c.AddSingleton(new YbpUserContext { { "UserId", 75675 } });
 
             serviceProvider = c.BuildServiceProvider();
 
@@ -78,12 +71,7 @@ namespace YBP.UnitTests.BP
             await CreateRoles();
         }
 
-        public virtual void InitializeServices(ServiceCollection c)
-        {
-            c.AddTransient<ICompanyReader, CompanyRepo>();
-            c.AddTransient<ICompanyWriter, CompanyRepo>();
-            c.AddTransient<ICompanyValidator, CompanyValidator>();
-        }
+        public abstract void InitializeServices(ServiceCollection c);
 
         public virtual void CreateDatabases()
         {
