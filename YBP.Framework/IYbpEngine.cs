@@ -47,7 +47,7 @@ namespace YBP.Framework
                 ActionId = ctx.StoredActionId,
             };
 
-            if (instance.MayNotToBeExecuted(ctx.Flags))
+            if (instance.MayNotBeExecuted(ctx.Flags))
                 return result;
 
             await ProcessAction<TProcess, TResult>(result, ctx, action, instance, prmJson);
@@ -97,7 +97,7 @@ namespace YBP.Framework
 
             var action = actions
                 .FirstOrDefault(x => x.NeedsToBeExecuted(ctx.Flags) 
-                    && !x.MayNotToBeExecuted(ctx.Flags));
+                    && !x.MayNotBeExecuted(ctx.Flags));
 
             if (action == null)
                 return false;

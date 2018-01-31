@@ -13,7 +13,7 @@ namespace YBP.Framework
 
         Func<YbpFlagsDictionary, bool> MayBeExecuted { get; }
 
-        Func<YbpFlagsDictionary, bool> MayNotToBeExecuted { get;  }
+        Func<YbpFlagsDictionary, bool> MayNotBeExecuted { get;  }
 
         bool CanExecute(YbpUserContext user);
     }
@@ -25,7 +25,7 @@ namespace YBP.Framework
 
         public abstract Func<YbpFlagsDictionary, bool> NeedsToBeExecuted { get; }
         public virtual Func<YbpFlagsDictionary, bool> MayBeExecuted => NeedsToBeExecuted;
-        public abstract Func<YbpFlagsDictionary, bool> MayNotToBeExecuted { get; }
+        public abstract Func<YbpFlagsDictionary, bool> MayNotBeExecuted { get; }
         public virtual bool CanBeExecutedAutomatically => false;
         public virtual bool RunOnlyOnce => false;
 
@@ -69,7 +69,7 @@ namespace YBP.Framework
 
         public override Func<YbpFlagsDictionary, bool> MayBeExecuted => flags => true;
 
-        public override Func<YbpFlagsDictionary, bool> MayNotToBeExecuted => flags => false;
+        public override Func<YbpFlagsDictionary, bool> MayNotBeExecuted => flags => false;
 
 
         public YbpFirstAction(IYbpEngine engine) : base(engine)
@@ -94,7 +94,7 @@ namespace YBP.Framework
     {
         public override Func<YbpFlagsDictionary, bool> NeedsToBeExecuted => f => true;
 
-        public override Func<YbpFlagsDictionary, bool> MayNotToBeExecuted => f => false;
+        public override Func<YbpFlagsDictionary, bool> MayNotBeExecuted => f => false;
 
         public YbpAction(IYbpEngine engine) : base(engine)
         {
@@ -145,7 +145,7 @@ namespace YBP.Framework
 
         public override bool CanBeExecutedAutomatically => true;
 
-        public override Func<YbpFlagsDictionary, bool> MayNotToBeExecuted 
+        public override Func<YbpFlagsDictionary, bool> MayNotBeExecuted 
             => f => RunOnlyOnce && f.AlreadyExecuted(this.GetType()) ;
 
         public YbpAction(IYbpEngine engine) : base(engine)

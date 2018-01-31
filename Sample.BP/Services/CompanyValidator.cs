@@ -1,7 +1,4 @@
 ﻿using Sample.Definitions.Companies;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Sample.Definitions.Common;
 using Sample.Definitions.Companies.Dto;
 

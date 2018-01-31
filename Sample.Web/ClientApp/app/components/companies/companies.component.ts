@@ -23,6 +23,11 @@ export class CompaniesComponent {
             );
 
     }
+
+
+    public delete(id: number) {
+        alert(id);
+    }
 }
 
 

@@ -9,7 +9,9 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
+
 import { CompaniesComponent } from './components/companies/companies.component';
+import { CompanyComponent } from './components/company/company.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +20,8 @@ import { CompaniesComponent } from './components/companies/companies.component';
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        CompaniesComponent
+        CompaniesComponent,
+        CompanyComponent
     ],
     imports: [
         CommonModule,
@@ -30,6 +33,7 @@ import { CompaniesComponent } from './components/companies/companies.component';
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: 'companies', component: CompaniesComponent },
+            { path: 'company/:id', component: CompanyComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

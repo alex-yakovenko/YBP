@@ -20,7 +20,7 @@
                 <span *ngIf="!item.isActive">Inactive</span> 
             </td>
             <td>
-                <a [routerLink]="['company', item.id]">Edit</a>
+                <a routeLink="/company">Edit</a>
                 <button (click)="delete(item.id)">Delete</button>
             </td>
         </tr>
