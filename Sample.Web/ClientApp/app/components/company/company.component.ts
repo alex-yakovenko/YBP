@@ -21,25 +21,15 @@ export class CompanyComponent {
 
     }
 
-    ngOnInit() {
+/*    ngOnInit() {
 
-        this.route.paramMap.first()
+        this.route
+            .paramMap
+            .switchMap((params: ParamMap) => this.edit(params.get('id'))
+            );
+    }*/
 
-        route.paramMap
-            .switchMap((params: ParamMap) => {
-                var s = params
-
-                if (s == null)
-                    return null;
-
-                this.id = +s;
-
-                return null;
-            }
-                );
-    }
-
-    public edit(id: number)
+    public edit(id: string|null)
     {
         alert(id);
     }
