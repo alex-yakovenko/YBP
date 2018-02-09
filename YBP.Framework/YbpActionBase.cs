@@ -5,15 +5,6 @@ namespace YBP.Framework
 {
     public interface IYbpActionBase
     {
-        bool CanBeExecutedAutomatically { get; }
-
-        bool RunOnlyOnce { get; }
-
-        Func<YbpFlagsDictionary, bool> NeedsToBeExecuted { get; }
-
-        Func<YbpFlagsDictionary, bool> MayBeExecuted { get; }
-
-        Func<YbpFlagsDictionary, bool> MayNotBeExecuted { get;  }
 
         bool CanExecute(YbpUserContext user);
     }
@@ -22,13 +13,6 @@ namespace YBP.Framework
         where TProcess : YbpProcessBase, new()
     {
         internal readonly IYbpEngine _engine;
-
-        public abstract Func<YbpFlagsDictionary, bool> NeedsToBeExecuted { get; }
-        public virtual Func<YbpFlagsDictionary, bool> MayBeExecuted => NeedsToBeExecuted;
-        public abstract Func<YbpFlagsDictionary, bool> MayNotBeExecuted { get; }
-        public virtual bool CanBeExecutedAutomatically => false;
-        public virtual bool RunOnlyOnce => false;
-
 
         public YbpActionBase(IYbpEngine engine)
         {
@@ -65,13 +49,6 @@ namespace YBP.Framework
         where TProcess : YbpProcessBase, new()
     {
 
-        public override Func<YbpFlagsDictionary, bool> NeedsToBeExecuted => flags => true;
-
-        public override Func<YbpFlagsDictionary, bool> MayBeExecuted => flags => true;
-
-        public override Func<YbpFlagsDictionary, bool> MayNotBeExecuted => flags => false;
-
-
         public YbpFirstAction(IYbpEngine engine) : base(engine)
         {
         }
@@ -92,9 +69,6 @@ namespace YBP.Framework
         : YbpActionBase<TProcess, TParam, TResult>
         where TProcess : YbpProcessBase, new()
     {
-        public override Func<YbpFlagsDictionary, bool> NeedsToBeExecuted => f => true;
-
-        public override Func<YbpFlagsDictionary, bool> MayNotBeExecuted => f => false;
 
         public YbpAction(IYbpEngine engine) : base(engine)
         {
@@ -141,12 +115,6 @@ namespace YBP.Framework
     public abstract class YbpAction<TProcess> : YbpAction<TProcess, string, string>
         where TProcess : YbpProcessBase, new()
     {
-        public override bool RunOnlyOnce => true;
-
-        public override bool CanBeExecutedAutomatically => true;
-
-        public override Func<YbpFlagsDictionary, bool> MayNotBeExecuted 
-            => f => RunOnlyOnce && f.AlreadyExecuted(this.GetType()) ;
 
         public YbpAction(IYbpEngine engine) : base(engine)
         {

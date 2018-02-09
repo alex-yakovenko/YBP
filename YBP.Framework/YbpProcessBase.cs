@@ -16,5 +16,6 @@ namespace YBP.Framework
             _className = GetType().Name;
         }
 
+        public IYbpActionDefinition[] Actions { get; protected set; }
     }
 }

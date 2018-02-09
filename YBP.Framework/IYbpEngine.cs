@@ -47,7 +47,12 @@ namespace YBP.Framework
                 ActionId = ctx.StoredActionId,
             };
 
-            if (instance.MayNotBeExecuted(ctx.Flags))
+            var process = new TProcess();
+
+
+            var actionDef = process.Actions.FirstOrDefault(x => x.ActionType == instance.GetType());
+
+            if (actionDef.MayNotBeExecuted(ctx.Flags))
                 return result;
 
             await ProcessAction<TProcess, TResult>(result, ctx, action, instance, prmJson);
@@ -84,10 +89,9 @@ namespace YBP.Framework
         public async Task<bool> ProcessNextAction<TProcess>(int ctxId)
             where TProcess : YbpProcessBase, new()
         {
-            var actions = YbpConfiguration
-                .Actions[typeof(TProcess)]
+            var actions = new TProcess()
+                .Actions
                 .Where(x => x.CanBeExecutedAutomatically && typeof(YbpAction<TProcess>).IsAssignableFrom(x.GetType()))
-                .Select(x => x as YbpAction<TProcess>)
                 .ToArray();
 
             if (!actions.Any())
@@ -95,16 +99,16 @@ namespace YBP.Framework
 
             var ctx = _ctxStorage.ById<TProcess>(ctxId);
 
-            var action = actions
+            var actionDef = actions
                 .FirstOrDefault(x => x.NeedsToBeExecuted(ctx.Flags) 
                     && !x.MayNotBeExecuted(ctx.Flags));
 
-            if (action == null)
+            if (actionDef == null)
                 return false;
 
-            var t = action.GetType();
+            var t = actionDef.ActionType;
 
-            action = _services.GetService(t) as YbpAction<TProcess>;
+            var action = _services.GetService(t) as YbpAction<TProcess>;
 
             await ExecAsync<TProcess, string>(ctx.Id, async c => await action.Run(c), action);
 

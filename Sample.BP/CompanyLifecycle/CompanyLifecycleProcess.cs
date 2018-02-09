@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using YBP.Framework;
+﻿using YBP.Framework;
 
 namespace Sample.BP.CompanyLifecycle
 {
     public class CompanyLifecycleProcess: YbpProcessBase
     {
+        public CompanyLifecycleProcess()
+        {
+            Actions = new IYbpActionDefinition[] {
+                new YbpFirstActionDefinition<CreateCompanyAction>(),
+                new YbpActionDefinition<UpdateCompanyAction>()
+            };
+        }
     }
 }

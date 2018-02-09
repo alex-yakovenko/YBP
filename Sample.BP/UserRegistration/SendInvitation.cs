@@ -11,12 +11,6 @@ namespace Sample.BP.UserRegistration
         {
         }
 
-        public override Func<YbpFlagsDictionary, bool> NeedsToBeExecuted => 
-            flags => flags[UserRegistrationProcess.Flags.NeedSendInvitation];
-
-        public override Func<YbpFlagsDictionary, bool> MayNotBeExecuted =>
-            flags => flags.AlreadyExecuted<SendInvitation>();
-
         protected async override Task<string> RunAsync(YbpContext<UserRegistrationProcess> context, string prm)
         {
             return null;

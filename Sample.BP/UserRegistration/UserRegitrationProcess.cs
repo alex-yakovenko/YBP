@@ -9,11 +9,23 @@ namespace Sample.BP.UserRegistration
         public override string Prefix => "UsrReg";
         public override string Title => "User registration";
 
-        public List<IYbpActionBase> Actions { get; private set; }
-
         public class Flags
         {
             public const string NeedSendInvitation = "Need Invitation";
+        }
+
+        public UserRegistrationProcess()
+        {
+            Actions = new IYbpActionDefinition[]
+            {
+                new YbpFirstActionDefinition<CreateUserAction>(),
+
+                new YbpAutomaticActionDefinition<SendInvitation>
+                {
+                    NeedsToBeExecuted = flags => flags[Flags.NeedSendInvitation],
+                    MayNotBeExecuted = flags => flags.AlreadyExecuted<SendInvitation>()
+                }
+            };
         }
     }
 }
