@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using YBP.Framework.Regisry;
 
 namespace YBP.Framework
 {
@@ -33,8 +34,7 @@ namespace YBP.Framework
                 ActionId = ctx.StoredActionId,
             };
 
-            var process = new TProcess();
-
+            var process = YbpConfiguration.Processes[typeof(TProcess)];
 
             var actionDef = process.Actions.FirstOrDefault(x => x.ActionType == instance.GetType());
 
@@ -75,7 +75,8 @@ namespace YBP.Framework
         public async Task<bool> ProcessNextAction<TProcess>(int ctxId)
             where TProcess : YbpProcessBase, new()
         {
-            var actions = new TProcess()
+            var actions = YbpConfiguration
+                .Processes[typeof(TProcess)]
                 .Actions
                 .Where(x => x.CanBeExecutedAutomatically && typeof(YbpAction<TProcess>).IsAssignableFrom(x.GetType()))
                 .ToArray();
