@@ -19,7 +19,6 @@ namespace YBP.UnitTests.BP.Companies
         {
             var target = serviceProvider.GetService<UpdateCompanyAction>();
 
-
         }
 
     }
