@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using System.Linq;
 using Sample.Definitions.Common;
 using Sample.Definitions.Companies;
+using Sample.BP.Common;
 
 namespace Sample.BP.CompanyLifecycle
 {
-    public class UpdateCompanyAction : YbpAction<CompanyLifecycleProcess, CompanyInfo, RuleViolations>
+    public class UpdateCompanyAction : YbpAction<CompanyLifecycleProcess, CompanyInfo, SaveItemResult>
     {
         private readonly ICompanyValidator _companyValidator;
         private readonly ICompanyWriter _companyWriter;
@@ -24,14 +25,19 @@ namespace Sample.BP.CompanyLifecycle
             _companyWriter = companyWriter;
         }
 
-        protected async override Task<RuleViolations> RunAsync(YbpContext<CompanyLifecycleProcess> context, CompanyInfo prm)
+        protected async override Task<SaveItemResult> RunAsync(YbpContext<CompanyLifecycleProcess> context, CompanyInfo prm)
         {
-            var result = _companyValidator.ValidateCompany(prm);
-
-            if (result.Any())
+            var result = new SaveItemResult
+            {
+                Errors = _companyValidator.ValidateCompany(prm)
+            };
+                
+            if (result.Errors.Any())
                 return result;
 
-            _companyWriter.Save(prm);
+            result.Id = _companyWriter.Save(prm);
+
+            result.Success = true;
 
             return result;
         }

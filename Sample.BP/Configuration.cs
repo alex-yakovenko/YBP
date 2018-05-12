@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Sample.BP.CompanyLifecycle;
 using Sample.Data;
 using Sample.Data.Repositories.Companies;
 using Sample.Definitions;
@@ -31,6 +32,8 @@ namespace Sample.BP
                 .AddUserStore<UserStore<AppUser, AppRole, SampleDbContext, int>>()
                 .AddRoleStore<RoleStore<AppRole, SampleDbContext, int>>();
 
+            c.AddTransient<CreateCompanyAction>();
+            c.AddTransient<UpdateCompanyAction>();
         }
 
         public static void InitDataContext(this IServiceCollection c, string connectionString)

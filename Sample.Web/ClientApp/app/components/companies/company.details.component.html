@@ -1,0 +1,52 @@
+﻿<h1>Company details</h1>
+
+<p *ngIf="!model">Loading...</p>
+
+<div *ngIf="model">
+
+    <form (ngSubmit)="onSubmit()" #detailsForm="ngForm">
+
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="title">Title:</label>
+            </div>
+            <div class="col-sm-3">
+                <input [(ngModel)]="model.data.title" 
+                       type="text" 
+                       placeholder="title" 
+                       id="title"
+                       name="title"
+                       #name="ngModel"
+                       required >
+
+                <div [hidden]="name.valid || name.pristine"
+                     class="alert alert-danger">
+                    Name is required
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="isActive"> Is Active: </label>
+            </div>
+            <div class="col-sm-3">
+                <input [(ngModel)]="model.data.isActive" 
+                       type="checkbox" 
+                       id="isActive"
+                       name="isActive">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-success" [disabled]="!detailsForm.form.valid">Save</button>
+                &nbsp;<a (click)="goBack()">go back</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
@@ -11,7 +11,7 @@ import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 
 import { CompaniesComponent } from './components/companies/companies.component';
-import { CompanyComponent } from './components/company/company.component';
+import { CompanyDetailsComponent } from './components/companies/company.details.component';
 
 @NgModule({
     declarations: [
@@ -21,11 +21,11 @@ import { CompanyComponent } from './components/company/company.component';
         FetchDataComponent,
         HomeComponent,
         CompaniesComponent,
-        CompanyComponent
+        CompanyDetailsComponent
     ],
     imports: [
         CommonModule,
-        HttpModule,
+        HttpClientModule,
         FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -33,7 +33,7 @@ import { CompanyComponent } from './components/company/company.component';
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: 'companies', component: CompaniesComponent },
-            { path: 'company/:id', component: CompanyComponent },
+            { path: 'company/:id', component: CompanyDetailsComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

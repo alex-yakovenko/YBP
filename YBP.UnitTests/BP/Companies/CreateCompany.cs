@@ -80,7 +80,8 @@ namespace YBP.UnitTests.BP.Companies
 
             var r1 = await updateAction.ExecAsync(r.Id.ToString(), updateInfo);
 
-            Assert.AreEqual("Please specify company name", r1["Title"][0]);
+            Assert.IsFalse(r1.Success);
+            Assert.AreEqual("Please specify company name", r1.Errors["Title"][0]);
 
             // Ensure we didn't change db entry
             company = companyReader.GetFirst<CompanyInfo>(new CompanyFilter
@@ -95,6 +96,9 @@ namespace YBP.UnitTests.BP.Companies
             updateInfo.IsApproved = false;
 
             r1 = await updateAction.ExecAsync(r.Id.ToString(), updateInfo);
+
+            Assert.IsTrue(r1.Success);
+            Assert.AreEqual(r.Id, r1.Id);
 
             // Retrieve updated company
             company = companyReader.GetFirst<CompanyInfo>(new CompanyFilter

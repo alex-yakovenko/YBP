@@ -11,7 +11,7 @@ using AutoMapper;
 
 namespace Sample.BP.CompanyLifecycle
 {
-    public class CreateCompanyAction : YbpFirstAction<CompanyLifecycleProcess, NewCompanyInfo, CreateItemResult>
+    public class CreateCompanyAction : YbpFirstAction<CompanyLifecycleProcess, NewCompanyInfo, SaveItemResult>
     {
         private readonly ICompanyValidator _companyValidator;
         private readonly ICompanyWriter _companyWriter;
@@ -28,9 +28,9 @@ namespace Sample.BP.CompanyLifecycle
         }
 
 
-        protected async override Task<CreateItemResult> RunAsync(YbpContext<CompanyLifecycleProcess> context, NewCompanyInfo prm)
+        protected async override Task<SaveItemResult> RunAsync(YbpContext<CompanyLifecycleProcess> context, NewCompanyInfo prm)
         {
-            var result = new CreateItemResult();
+            var result = new SaveItemResult();
 
             var info = Mapper.Map<CompanyInfo>(prm);
 

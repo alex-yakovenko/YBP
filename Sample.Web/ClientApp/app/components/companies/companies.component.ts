@@ -1,5 +1,6 @@
-import { Component, Inject } from '@angular/core';
-import { Http } from '@angular/http';
+import { Inject } from '@angular/core';
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'companieslist',
@@ -9,35 +10,43 @@ export class CompaniesComponent {
 
     public list: CompanyInfo[];
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+    constructor(
+        public http: HttpClient,
+
+        @Inject('BASE_URL')
+        public baseUrl: string) {
 
         http
-            .get(baseUrl + 'api/companies/list')
+            .get(this.baseUrl + 'api/companies/list')
             .subscribe(
-            result => {
-                var d = result.json() as CompanyListModel;
-                console.log(d);
-                    this.list = d.items;
-                },
-                error => console.error(error)
+                result => {
+                    console.log(result);
+                    this.list = result.items;
+                    }
             );
 
     }
 
 
     public delete(id: number) {
-        alert(id);
+        if (confirm("Remove company?"))
+        {
+
+        };
     }
 }
 
 
-class CompanyInfo {
+export class CompanyListModel {
+    items: CompanyInfo[];
+    totalCount: number;
+}
+
+export class CompanyInfo {
     id: number;
     title: string;
     isActive: boolean;
 }
 
-class CompanyListModel {
-    items: CompanyInfo[];
-    totalCount: number;
-}
+
+

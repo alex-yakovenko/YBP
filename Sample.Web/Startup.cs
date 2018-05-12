@@ -15,6 +15,7 @@ using Sample.BP.UserRegistration;
 using Sample.Data;
 using Sample.Definitions.Companies;
 using Sample.Services.Company;
+using YBP.Framework;
 
 namespace Sample.Web
 {
@@ -39,6 +40,8 @@ namespace Sample.Web
         {
             services.AddMvc();
             services.InitBLServices();
+            services.AddSingleton(new YbpUserContext { { "UserId", 75675 } });
+
 
             var ybpConnectionString = Configuration["YbpConnectionString"];
             var ybpSampleConnectionString = Configuration["YbpSampleAppConnectionString"];

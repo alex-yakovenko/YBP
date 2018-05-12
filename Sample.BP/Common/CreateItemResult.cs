@@ -2,7 +2,7 @@
 
 namespace Sample.BP.Common
 {
-    public class CreateItemResult
+    public class SaveItemResult
     {
         public bool Success { get; set; }
         public int Id { get; set; }
@@ -10,5 +10,4 @@ namespace Sample.BP.Common
         public RuleViolations Errors { get; set; } 
             = new RuleViolations();
     }
-
 }
