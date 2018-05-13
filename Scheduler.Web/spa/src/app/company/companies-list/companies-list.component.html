@@ -24,14 +24,20 @@
                         <h3 class="card-title">Responsive Hover Table</h3>
                         <div class="card-tools">
                             
-                            <form action="javascript:void(0)" (submit)="applySearch()">
                                 <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" [(ngModel)]="filter.qry"  name="table_search" class="form-control float-right" placeholder="Search">
+                                    
+                                    <input type="text" 
+                                           name="title" 
+                                           [(ngModel)]="filter.title"  
+                                           #title="ngModel"
+                                           class="form-control float-right" 
+                                           (keyup)="filterChanged()"
+                                           placeholder="Search" />
+
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                        <button type="button" (click)="clearTitle()" class="btn btn-default"><i class="fa fa-eraser"></i></button>
                                     </div>
                                 </div>
-                            </form>
 
                         </div>
                     </div>

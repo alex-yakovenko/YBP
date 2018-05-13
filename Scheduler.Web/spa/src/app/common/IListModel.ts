@@ -1,5 +1,5 @@
-﻿export interface IListModel<TListItem>
+﻿export interface IListModel
 {
     totalCount: number;
-    items: TListItem[]
+    items: any[]
 }

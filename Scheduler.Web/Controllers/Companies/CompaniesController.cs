@@ -26,12 +26,12 @@ namespace Scheduler.Web.Controllers.Companies
         }
 
         [HttpGet]
-        public CompaniesListModel List()
+        public CompaniesListModel List(CompanyFilter filter)
         {
             var model = new CompaniesListModel {
 
-                TotalCount = _companyReader.GetCount(),
-                Items = _companyReader.GetList<CompanyInfo>()
+                TotalCount = _companyReader.GetCount(filter),
+                Items = _companyReader.GetList<CompanyInfo>(filter)
             };
 
             return model;

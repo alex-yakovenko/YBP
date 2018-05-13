@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { IListModel } from '../common/IListModel';
@@ -9,13 +9,9 @@ export class CompaniesService {
     constructor(private http: HttpClient) {
     }
 
-    getList(): Observable<IListModel<ICompanyListItem>> {
-        return this.http.get<IListModel<ICompanyListItem>>('/api/companies/list');
+    getList(filter: any): Observable<IListModel> {
+        return this.http.get<IListModel>('/api/companies/list', { params: new HttpParams({ fromObject: filter })} );
     }
 }
 
-export interface ICompanyListItem {
-    id: number;
-    title: string;
-    isApproved: boolean;
-}
+

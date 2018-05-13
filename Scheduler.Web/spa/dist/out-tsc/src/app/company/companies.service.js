@@ -15,8 +15,8 @@ var CompaniesService = /** @class */ (function () {
     function CompaniesService(http) {
         this.http = http;
     }
-    CompaniesService.prototype.getList = function () {
-        return this.http.get('/api/companies/list');
+    CompaniesService.prototype.getList = function (filter) {
+        return this.http.get('/api/companies/list', { params: new http_1.HttpParams({ fromObject: filter }) });
     };
     CompaniesService = __decorate([
         core_1.Injectable(),
@@ -25,4 +25,10 @@ var CompaniesService = /** @class */ (function () {
     return CompaniesService;
 }());
 exports.CompaniesService = CompaniesService;
+var CompaniesFilter = /** @class */ (function () {
+    function CompaniesFilter() {
+    }
+    return CompaniesFilter;
+}());
+exports.CompaniesFilter = CompaniesFilter;
 //# sourceMappingURL=companies.service.js.map

@@ -10,6 +10,7 @@ var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
 var router_1 = require("@angular/router");
+var forms_1 = require("@angular/forms");
 var ngx_bootstrap_1 = require("ngx-bootstrap");
 var ngx_bootstrap_2 = require("ngx-bootstrap");
 var app_component_1 = require("./app.component");
@@ -34,11 +35,11 @@ var AppModule = /** @class */ (function () {
                 home_component_1.HomeComponent,
                 main_sidebar_component_1.MainSidebarComponent,
                 companies_list_component_1.CompaniesListComponent,
-                company_details_component_1.CompanyDetailsComponent,
-                companies_service_1.CompaniesService
+                company_details_component_1.CompanyDetailsComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
+                forms_1.FormsModule,
                 ngx_bootstrap_1.AlertModule.forRoot(),
                 ngx_bootstrap_2.BsDropdownModule.forRoot(),
                 http_1.HttpClientModule,
@@ -50,7 +51,7 @@ var AppModule = /** @class */ (function () {
                     { path: '**', redirectTo: 'home' }
                 ])
             ],
-            providers: [],
+            providers: [companies_service_1.CompaniesService],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
