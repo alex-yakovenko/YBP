@@ -3,6 +3,7 @@ using Sample.BP.Common;
 using Sample.BP.CompanyLifecycle;
 using Sample.Definitions.Companies;
 using Sample.Definitions.Companies.Dto;
+using Scheduler.Web.Models;
 using System.Threading.Tasks;
 
 namespace Scheduler.Web.Controllers.Companies
@@ -26,12 +27,14 @@ namespace Scheduler.Web.Controllers.Companies
         }
 
         [HttpGet]
-        public CompaniesListModel List(CompanyFilter filter)
+        public CompaniesListModel List(CompanyFilter filter, ListRequest<CompanyOrder> list)
         {
-            var model = new CompaniesListModel {
+            list = list ?? new ListRequest<CompanyOrder>();
 
+            var model = new CompaniesListModel
+            {
                 TotalCount = _companyReader.GetCount(filter),
-                Items = _companyReader.GetList<CompanyInfo>(filter)
+                Items = _companyReader.GetList<CompanyInfo>(filter, list.SkipCount, list.TakeCount, list.SortOrder, list.SortDesc)
             };
 
             return model;
