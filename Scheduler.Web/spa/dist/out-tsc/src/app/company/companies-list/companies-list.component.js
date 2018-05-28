@@ -12,26 +12,66 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var companies_service_1 = require("../companies.service");
 var router_1 = require("@angular/router");
+var pagination_component_1 = require("../../layout/pagination/pagination.component");
 var CompaniesListComponent = /** @class */ (function () {
     function CompaniesListComponent(service, route, router) {
         this.service = service;
         this.route = route;
         this.router = router;
-        this.filter = new companies_service_1.CompaniesFilter();
+        this.filter = { title: null };
+        this.data = {};
+        this.page = new pagination_component_1.Pagination();
     }
     CompaniesListComponent.prototype.ngOnInit = function () {
+        //this.data = { "totalCount": 5, "items": [{ "id": 1, "title": "Company 1", "isApproved": true }, { "id": 2, "title": "Company 2", "isApproved": true }, { "id": 3, "title": "Company 3", "isApproved": true }, { "id": 4, "title": "Company e5beb3b5-d45c-4e1e-9787-27ff213b8508", "isApproved": true }, { "id": 5, "title": "jgfjgj2", "isApproved": false }] };
         var _this = this;
-        this.data = { "totalCount": 5, "items": [{ "id": 1, "title": "Company 1", "isApproved": true }, { "id": 2, "title": "Company 2", "isApproved": true }, { "id": 3, "title": "Company 3", "isApproved": true }, { "id": 4, "title": "Company e5beb3b5-d45c-4e1e-9787-27ff213b8508", "isApproved": true }, { "id": 5, "title": "jgfjgj2", "isApproved": false }] };
-        this.route.queryParams.subscribe(function (prm) {
-            _this.filter = (prm);
-            _this.service.getList(_this.filter)
+        this.route.queryParamMap.subscribe(function (prm) {
+            for (var _i = 0, _a = prm.keys; _i < _a.length; _i++) {
+                var k = _a[_i];
+                var val = prm.get(k);
+                if (!_this.page.parseRouteParam(k, val))
+                    _this.filter[k] = val;
+            }
+            var p = Object.assign({}, _this.filter, _this.page.listParams());
+            _this.service.getList(p)
                 .subscribe(function (result) {
-                _this.data = result;
+                Object.assign(_this.data, result);
+                _this.page.setTotal(result.total);
             });
         });
     };
     CompaniesListComponent.prototype.applySearch = function () {
-        this.router.navigate([this.route.routeConfig.path], { queryParams: this.filter, queryParamsHandling: 'merge' });
+        var f = {};
+        var names = Object.getOwnPropertyNames(this.filter);
+        for (var _i = 0, names_1 = names; _i < names_1.length; _i++) {
+            var n = names_1[_i];
+            if (this.filter[n])
+                f[n] = this.filter[n];
+        }
+        Object.assign(f, this.page.getUrlParams());
+        this.router
+            .navigate([this.route.routeConfig.path], {
+            queryParams: f
+        });
+    };
+    CompaniesListComponent.prototype.filterChanged = function () {
+        var _this = this;
+        var fltrJson = JSON.stringify(this.filter);
+        if (fltrJson == this.prevFltrJson)
+            return;
+        this.prevFltrJson = fltrJson;
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = null;
+        }
+        this.searchTimeout = setTimeout(function () {
+            _this.searchTimeout = null;
+            _this.applySearch();
+        }, 800);
+    };
+    CompaniesListComponent.prototype.clearTitle = function () {
+        this.filter.title = '';
+        this.filterChanged();
     };
     CompaniesListComponent = __decorate([
         core_1.Component({

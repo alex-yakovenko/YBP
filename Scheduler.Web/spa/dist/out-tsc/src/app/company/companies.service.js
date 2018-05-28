@@ -25,10 +25,4 @@ var CompaniesService = /** @class */ (function () {
     return CompaniesService;
 }());
 exports.CompaniesService = CompaniesService;
-var CompaniesFilter = /** @class */ (function () {
-    function CompaniesFilter() {
-    }
-    return CompaniesFilter;
-}());
-exports.CompaniesFilter = CompaniesFilter;
 //# sourceMappingURL=companies.service.js.map

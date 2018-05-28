@@ -23,21 +23,21 @@
                     <div class="card-header">
                         <h3 class="card-title">Responsive Hover Table</h3>
                         <div class="card-tools">
-                            
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    
-                                    <input type="text" 
-                                           name="title" 
-                                           [(ngModel)]="filter.title"  
-                                           #title="ngModel"
-                                           class="form-control float-right" 
-                                           (keyup)="filterChanged()"
-                                           placeholder="Search" />
 
-                                    <div class="input-group-append">
-                                        <button type="button" (click)="clearTitle()" class="btn btn-default"><i class="fa fa-eraser"></i></button>
-                                    </div>
+                            <div class="input-group input-group-sm" style="width: 150px;">
+
+                                <input type="text"
+                                       name="title"
+                                       [(ngModel)]="filter.title"
+                                       #title="ngModel"
+                                       class="form-control float-right"
+                                       (keyup)="filterChanged()"
+                                       placeholder="Search" />
+
+                                <div class="input-group-append">
+                                    <button type="button" (click)="clearTitle()" class="btn btn-default"><i class="fa fa-eraser"></i></button>
                                 </div>
+                            </div>
 
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                 <th>Actions</th>
                             </tr>
                             <tr *ngFor="let item of data.items">
-                                <td>{{item.title}}</td>
+                                <td><a [routerLink]="['/company/' + item.id]">{{item.title}}</a></td>
                                 <td>{{item.isApproved ? 'Approved': 'Not Approved'}}</td>
                                 <td></td>
                             </tr>
@@ -58,24 +58,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-5">
-                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
-            </div>
-            <div class="col-sm-12 col-md-7">
-                <div class="dataTables_paginate paging_simple_numbers pull-right">
-                    <ul class="pagination">
-                        <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
-                        <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                        <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                        <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                        <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-                        <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-                        <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
-                        <li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <pagination [control]="page.control"></pagination>
+
     </div>
 </section>

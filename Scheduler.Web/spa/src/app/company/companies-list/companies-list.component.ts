@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { CompaniesService } from '../companies.service';
 import { IListModel } from '../../common/IListModel';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Pagination, PaginationControlInfo } from '../../layout/pagination/pagination.component';
 
 @Component({
     selector: 'app-companies-list',
@@ -10,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CompaniesListComponent implements OnInit {
 
-    public page: Pagination;
     public data: IListModel;
 
     public filter: any;
@@ -19,15 +19,27 @@ export class CompaniesListComponent implements OnInit {
         private service: CompaniesService,
         private route: ActivatedRoute,
         private router: Router,
+        public page: Pagination
     ) {
         this.filter = { title: null };
         this.data = <IListModel>{};
-        this.page = new Pagination();
     }
 
     ngOnInit() {
 
-        //this.data = { "totalCount": 5, "items": [{ "id": 1, "title": "Company 1", "isApproved": true }, { "id": 2, "title": "Company 2", "isApproved": true }, { "id": 3, "title": "Company 3", "isApproved": true }, { "id": 4, "title": "Company e5beb3b5-d45c-4e1e-9787-27ff213b8508", "isApproved": true }, { "id": 5, "title": "jgfjgj2", "isApproved": false }] };
+        this.data = { "totalCount": 5, "items": [{ "id": 1, "title": "Company 1", "isApproved": true }, { "id": 2, "title": "Company 2", "isApproved": true }, { "id": 3, "title": "Company 3", "isApproved": true }, { "id": 4, "title": "Company e5beb3b5-d45c-4e1e-9787-27ff213b8508", "isApproved": true }, { "id": 5, "title": "jgfjgj2", "isApproved": false }] };
+
+        this.route.queryParamMap.subscribe((prm) => {
+
+            this.page.setPage(5);
+        
+            this.page.setTotal(1215);
+
+        });
+
+        this.page.applyUrlData({});
+
+        return;
 
         this.route.queryParamMap.subscribe((prm) => {
             for (let k of prm.keys) {
@@ -44,11 +56,15 @@ export class CompaniesListComponent implements OnInit {
             this.service.getList(p)
                 .subscribe((result: any) => {
                     Object.assign(this.data, result);
+                    this.page.setTotal(result.total);
                 });
+
+            this.page.applyUrlData(this.filter);
 
         });
         
     }
+
 
     public applySearch() {
 
@@ -88,6 +104,7 @@ export class CompaniesListComponent implements OnInit {
         this.searchTimeout = setTimeout(() => {
             this.searchTimeout = null;
             this.applySearch();
+            this.page.applyUrlData(this.filter);
         }, 800);
     }
 
@@ -97,64 +114,3 @@ export class CompaniesListComponent implements OnInit {
     }
 
 }
-
-export class Pagination {
-    private page: number;
-    private total: number;
-    public rows: number;
-    public order: string;
-    public desc: boolean;
-
-    constructor() {
-
-    }
-
-    public listParams(): ListParams {
-        return new ListParams(
-            0,
-            50,
-            this.order || '',
-            this.desc || false
-        )
-    }
-
-    public parseRouteParam(k: string, val: string): boolean {
-        switch (k) {
-            case "p.rows":
-                this.rows = +val;
-                return true;
-
-            case "p.order":
-                this.order = val;
-                return true;
-
-            case "p.desc":
-                this.desc = val == "true";
-                return true;
-
-            default:
-                return false;
-        }        
-    }
-
-    public getUrlParams(): any {
-        var f = {};
-
-        var names = Object.getOwnPropertyNames(this);
-        for (let n of names)
-            if (this[n])
-                f['p.' + n] = this[n];
-
-        return f;
-    }
-}
-
-export class ListParams {
-    constructor(
-        public skipCount: number,
-        public takeCount: number,
-        public sortOrder: string,
-        public sortDesc: boolean) {
-    }
- }
-

@@ -17,6 +17,7 @@ import { MainSidebarComponent } from './layout/main-sidebar/main-sidebar.compone
 import { CompaniesListComponent } from './company/companies-list/companies-list.component';
 import { CompanyDetailsComponent } from './company/company-details/company-details.component';
 import { CompaniesService } from './company/companies.service';
+import { PaginationComponent, Pagination } from './layout/pagination/pagination.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { CompaniesService } from './company/companies.service';
         HomeComponent,
         MainSidebarComponent,
         CompaniesListComponent,
-        CompanyDetailsComponent        
+        CompanyDetailsComponent,
+        PaginationComponent        
     ],
     imports: [
         BrowserModule,
@@ -45,7 +47,7 @@ import { CompaniesService } from './company/companies.service';
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [CompaniesService],
+    providers: [CompaniesService, Pagination],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

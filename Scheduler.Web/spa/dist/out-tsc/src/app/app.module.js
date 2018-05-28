@@ -22,6 +22,7 @@ var main_sidebar_component_1 = require("./layout/main-sidebar/main-sidebar.compo
 var companies_list_component_1 = require("./company/companies-list/companies-list.component");
 var company_details_component_1 = require("./company/company-details/company-details.component");
 var companies_service_1 = require("./company/companies.service");
+var pagination_component_1 = require("./layout/pagination/pagination.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -35,7 +36,8 @@ var AppModule = /** @class */ (function () {
                 home_component_1.HomeComponent,
                 main_sidebar_component_1.MainSidebarComponent,
                 companies_list_component_1.CompaniesListComponent,
-                company_details_component_1.CompanyDetailsComponent
+                company_details_component_1.CompanyDetailsComponent,
+                pagination_component_1.PaginationComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
